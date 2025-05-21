@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indiana - Luxury Fashion & Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #808080;
+            --text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-text {
+            font-size: 3rem;
+            letter-spacing: 0.5em;
+            animation: fadeInOut 2s infinite;
+        }
+
+        /* New Navigation Styles */
+        .luxury-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 60px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .nav-link-last {
+            margin-left: 20px;
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-last:hover {
+            background-color: #ffffff;
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 400;
+            position: relative;
+            transition: all 0.3s ease;
+            background-color: #000000;
+            padding: 10px 20px;
+            border-radius: 2px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #ffffff;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-logo {
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .brand-logo.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            letter-spacing: 10px;
+            font-weight: 400;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .logo-subtext {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            letter-spacing: 6px;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        /* Updated Hero Section Styles */
+        .hero-new {
+            margin-top: 120px;
+            padding: 0;
+            width: 100%;
+            min-height: calc(100vh - 120px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            background: white;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+            filter: grayscale(20%) contrast(110%);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            image-rendering: -webkit-optimize-contrast;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+            filter: contrast(105%) brightness(102%);
+            transition: all 0.3s ease;
+        }
+
+        .main-image:hover {
+            filter: contrast(110%) brightness(105%);
+        }
+
+        @media (min-width: 2000px) {
+            .hero-image {
+                max-width: 2400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-new {
+                margin-top: 100px;
+                min-height: calc(100vh - 100px);
+            }
+            .hero-image {
+                padding: 0 20px;
+            }
+            .video-background video {
+                height: 100%;
+                width: auto;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Image Overlays */
+        .hero-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.15);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hero-image-container:hover::after {
+            opacity: 1;
+        }
+
+        /* Diagonal Lines */
+        .diagonal-line {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(15deg);
+            transform-origin: top;
+            top: 0;
+            z-index: 1;
+        }
+
+        .line-1 {
+            left: 32%;
+        }
+
+        .line-2 {
+            right: 32%;
+        }
+
+        /* Add smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Cursor interaction */
+        .hero-image-container {
+            cursor: pointer;
+        }
+
+        .hero-new {
+            position: relative;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeInUp 1s ease 2s forwards;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            width: 2px;
+            height: 60px;
+            background: black;
+            display: block;
+            margin: 0 auto;
+            animation: scrollIndicate 2s infinite;
+        }
+
+        @keyframes scrollIndicate {
+            0% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+            50.1% {
+                transform-origin: bottom;
+            }
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+
+        /* Parallax Sections */
+        .parallax-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) contrast(120%);
+            transform: scale(1.1);
+        }
+
+        /* Portfolio Grid with Hover Effects */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2px;
+            background: var(--primary-color);
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.2);
+            filter: grayscale(0%) brightness(1.1);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 0, 128, 0.3),
+                rgba(0, 128, 255, 0.3),
+                rgba(128, 0, 255, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.5s ease;
+            mix-blend-mode: overlay;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+            animation: colorShift 3s infinite;
+        }
+
+        .portfolio-overlay h3 {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay h3 {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes colorShift {
+            0% {
+                background: linear-gradient(45deg, 
+                    rgba(255, 0, 128, 0.3),
+                    rgba(0, 128, 255, 0.3),
+                    rgba(128, 0, 255, 0.3));
+            }
+            33% {
+                background: linear-gradient(45deg, 
+                    rgba(0, 128, 255, 0.3),
+                    rgba(128, 0, 255, 0.3),
+                    rgba(255, 0, 128, 0.3));
+            }
+            66% {
+                background: linear-gradient(45deg, 
+                    rgba(128, 0, 255, 0.3),
+                    rgba(255, 0, 128, 0.3),
+                    rgba(0, 128, 255, 0.3));
+            }
+            100% {
+                background: linear-gradient(45deg, 
+                    rgba(255, 0, 128, 0.3),
+                    rgba(0, 128, 255, 0.3),
+                    rgba(128, 0, 255, 0.3));
+            }
+        }
+
+        /* Add a subtle glow effect on hover */
+        .portfolio-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .portfolio-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Add a border animation on hover */
+        .portfolio-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+
+        .portfolio-item:hover::before {
+            border-color: rgba(255, 255, 255, 0.3);
+            animation: borderPulse 2s infinite;
+        }
+
+        @keyframes borderPulse {
+            0% {
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            100% {
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* Smooth Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-new {
+                margin-top: 100px;
+                min-height: calc(100vh - 100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <div class="loader">
+        <div class="loader-text">Indiana</div>
+    </div>
+
+    <nav class="luxury-nav">
+        <div class="nav-left">
+            <a href="#" class="nav-link">Collections</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Enquier</a>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="brand-logo">
+                <span class="logo-text">Indiana</span>
+                <span class="logo-subtext">FOR SMALL BUSINESS</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="#" class="nav-link">Enroll</a>
+            <a href="#" class="nav-link">Contact</a>
+            <a href="#" class="nav-link nav-link-last">Journal</a>
+        </div>
+        <div class="nav-progress"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-new">
+        <div class="video-background">
+            <video autoplay muted loop playsinline id="hero-video">
+                <source src="https://cdn.coverr.co/videos/coverr-luxury-fashion-show-2023/1080p.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="hero-image">
+            <img src="images/hero-new.png" alt="Hero Image" class="main-image">
+        </div>
+    </section>
+
+    <section class="parallax-section">
+        <div class="parallax-bg" style="background-image: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e')"></div>
+        <h2 class="reveal">TIMELESS ELEGANCE</h2>
+    </section>
+
+    <section class="portfolio-grid">
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 01</h3>
+            </div>
+        </div>
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 02</h3>
+            </div>
+        </div>
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 03</h3>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1
+            });
+            gsap.to(follower, {
+                x: e.clientX - 20,
+                y: e.clientY - 20,
+                duration: 0.3
+            });
+        });
+
+        // Loading Animation
+        window.addEventListener('load', () => {
+            gsap.to('.loader', {
+                opacity: 0,
+                duration: 1,
+                delay: 2,
+                onComplete: () => {
+                    document.querySelector('.loader').style.display = 'none';
+                }
+            });
+
+            // Hero Text Animation
+            gsap.to('.hero-text', {
+                opacity: 1,
+                duration: 1,
+                delay: 2.5
+            });
+
+            gsap.to('.split-text span', {
+                y: 0,
+                duration: 1.5,
+                delay: 2.5,
+                ease: "power4.out",
+                stagger: 0.2
+            });
+        });
+
+        // Parallax Effect
+        gsap.to('.parallax-bg', {
+            scrollTrigger: {
+                trigger: '.parallax-section',
+                scrub: true
+            },
+            y: 200,
+            scale: 1.2
+        });
+
+        // Reveal Animation
+        const reveals = document.querySelectorAll('.reveal');
+
+        function reveal() {
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check
+    </script>
+
+    <!-- Additional Sections with Horizontal Scroll -->
+    <style>
+        .horizontal-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .horizontal-container {
+            display: flex;
+            position: relative;
+            height: 100%;
+            will-change: transform;
+        }
+
+        .horizontal-panel {
+            min-width: 100vw;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .panel-content {
+            width: 80%;
+            max-width: 1200px;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.8s ease;
+        }
+
+        .panel-content.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .horizontal-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) contrast(120%);
+            opacity: 0.3;
+        }
+    </style>
+
+    <section class="horizontal-section">
+        <div class="horizontal-container">
+            <div class="horizontal-panel">
+                <div class="horizontal-bg" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d')"></div>
+                <div class="panel-content">
+                    <h2 class="reveal">CONTEMPORARY VISION</h2>
+                    <p class="reveal">Discover our latest collections that blend traditional craftsmanship with modern aesthetics.</p>
+                </div>
+            </div>
+            <div class="horizontal-panel">
+                <div class="horizontal-bg" style="background-image: url('https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc')"></div>
+                <div class="panel-content">
+                    <h2 class="reveal">TIMELESS ELEGANCE</h2>
+                    <p class="reveal">Each piece tells a story of sophistication and refined luxury.</p>
+                </div>
+            </div>
+            <div class="horizontal-panel">
+                <div class="horizontal-bg" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b')"></div>
+                <div class="panel-content">
+                    <h2 class="reveal">ETERNAL STYLE</h2>
+                    <p class="reveal">Where heritage meets innovation in perfect harmony.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Horizontal Scroll Animation
+        let horizontalSection = document.querySelector('.horizontal-section');
+        let horizontalContainer = document.querySelector('.horizontal-container');
+        let panels = gsap.utils.toArray('.horizontal-panel');
+
+        gsap.to(panels, {
+            xPercent: -100 * (panels.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: horizontalSection,
+                pin: true,
+                scrub: 1,
+                snap: 1 / (panels.length - 1),
+                end: () => "+=" + horizontalSection.offsetWidth
+            }
+        });
+
+        // Panel Content Animation
+        panels.forEach((panel, i) => {
+            let content = panel.querySelector('.panel-content');
+            
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top center",
+                end: "bottom center",
+                onEnter: () => content.classList.add('active'),
+                onLeave: () => content.classList.remove('active'),
+                onEnterBack: () => content.classList.add('active'),
+                onLeaveBack: () => content.classList.remove('active')
+            });
+        });
+    </script>
+
+    <!-- Additional Portfolio Grid -->
+    <section class="portfolio-grid">
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 07</h3>
+            </div>
+        </div>
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 08</h3>
+            </div>
+        </div>
+        <div class="portfolio-item reveal">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f" alt="Fashion">
+            <div class="portfolio-overlay">
+                <h3>COLLECTION 09</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Information Section -->
+    <section class="info-section">
+        <div class="slogan-container reveal">
+            <h2 class="main-slogan">Luxury Isn't Just a Look—It's a Lifestyle.</h2>
+            <div class="nav-buttons">
+                <button class="nav-btn">Shop Now</button>
+                <button class="nav-btn">New Collection</button>
+                <button class="nav-btn">Our Story</button>
+                <button class="nav-btn">Contact Us</button>
+            </div>
+        </div>
+
+        <!-- Shop Section -->
+        <div class="shop-section">
+            <h2>Shop Our Collection</h2>
+            <div class="clothing-grid">
+                <div class="clothing-item">
+                    <div class="collection-label">New Season</div>
+                    <div class="clothing-preview">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" alt="Luxury Cotton Shirt">
+                        <div class="item-overlay"></div>
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Luxury Cotton Shirt</h3>
+                        <p class="item-price">€295</p>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="clothing-item">
+                    <div class="collection-label">Limited Edition</div>
+                    <div class="clothing-preview">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d" alt="Premium Denim">
+                        <div class="item-overlay"></div>
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Premium Denim</h3>
+                        <p class="item-price">€385</p>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="clothing-item">
+                    <div class="collection-label">Exclusive</div>
+                    <div class="clothing-preview">
+                        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7" alt="Cashmere Blend Hoodie">
+                        <div class="item-overlay"></div>
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Cashmere Blend Hoodie</h3>
+                        <p class="item-price">€495</p>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="clothing-item">
+                    <div class="collection-label">Signature</div>
+                    <div class="clothing-preview">
+                        <img src="https://images.unsplash.com/photo-1612336307429-8a898d10e223" alt="Silk Evening Dress">
+                        <div class="item-overlay"></div>
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Silk Evening Dress</h3>
+                        <p class="item-price">€895</p>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-container reveal">
+            <div class="info-card">
+                <h3>Our Story</h3>
+                <p>Founded in 2010, we've been at the forefront of contemporary fashion, blending innovative design with timeless elegance. Our commitment to quality and sustainability shapes every piece we create.</p>
+                <ul class="info-details">
+                    <li>Founded by renowned designer Maria Chen</li>
+                    <li>Featured in Vogue, Elle, and Harper's Bazaar</li>
+                    <li>Present in 50+ luxury boutiques worldwide</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>Craftsmanship</h3>
+                <p>Each garment is meticulously crafted by skilled artisans using premium materials. We pride ourselves on attention to detail and exceptional finishing that sets our collections apart.</p>
+                <ul class="info-details">
+                    <li>Hand-finished details</li>
+                    <li>Premium Italian fabrics</li>
+                    <li>Limited edition pieces</li>
+                    <li>Custom tailoring service</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>Sustainability</h3>
+                <p>We're committed to ethical fashion practices and environmental responsibility. Our collections use sustainable materials and eco-friendly production methods.</p>
+                <ul class="info-details">
+                    <li>100% renewable energy in production</li>
+                    <li>Zero-waste pattern cutting</li>
+                    <li>Organic and recycled materials</li>
+                    <li>Fair trade certified</li>
+                </ul>
+            </div>
+        </div>
+        <div class="achievements-container reveal">
+            <div class="achievement">
+                <span class="number">12+</span>
+                <span class="label">Years of Excellence</span>
+            </div>
+            <div class="achievement">
+                <span class="number">50k+</span>
+                <span class="label">Satisfied Clients</span>
+            </div>
+            <div class="achievement">
+                <span class="number">30+</span>
+                <span class="label">Countries</span>
+            </div>
+            <div class="achievement">
+                <span class="number">15</span>
+                <span class="label">Design Awards</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@luxuryfashion.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Address: 123 Fashion Avenue, New York, NY 10001</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#collections">Collections</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#sustainability">Sustainability</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">Instagram</a>
+                    <a href="#" class="social-link">Facebook</a>
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Pinterest</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Luxury Fashion. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        .info-section {
+            padding: 0;
+            background: #ffffff;
+            position: relative;
+            z-index: 1;
+            margin-top: -1px; /* Remove any gaps */
+        }
+
+        .slogan-container {
+            text-align: center;
+            padding: 40px 20px;
+            background: #000000;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-slogan {
+            font-size: 42px;
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .info-card {
+            background: black;
+            color: white;
+            padding: 30px;
+            border-bottom: 1px solid #333;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .achievements-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            margin: 0;
+            padding: 40px 20px;
+            background: black;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .site-footer {
+            background: #1a1a1a;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+            margin-top: -1px; /* Remove any gaps */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .footer-section a {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ensure all elements are visible */
+        .reveal {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transition: all 0.8s ease !important;
+        }
+
+        /* Remove any potential gaps */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        section, footer {
+            width: 100%;
+        }
+    </style>
+
+    <script>
+        // Ensure all elements are visible on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('active');
+                }, index * 200);
+            });
+        });
+    </script>
+
+    <style>
+        /* Enhanced horizontal scroll stability */
+        .horizontal-section {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .horizontal-bg {
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .horizontal-panel {
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* Smoother image loading */
+        .horizontal-bg {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.3; }
+        }
+    </style>
+
+    <script>
+        // Enhanced smooth scrolling for horizontal panels
+        const horizontalPanels = document.querySelectorAll('.horizontal-panel');
+        
+        horizontalPanels.forEach(panel => {
+            const bg = panel.querySelector('.horizontal-bg');
+            
+            // Preload images
+            const img = new Image();
+            img.src = bg.style.backgroundImage.slice(4, -1).replace(/"/g, "");
+            
+            img.onload = () => {
+                bg.style.opacity = "0";
+                requestAnimationFrame(() => {
+                    bg.style.animation = "fadeIn 0.5s ease-out forwards";
+                });
+            };
+
+            // Smooth parallax effect
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.5,
+                onUpdate: (self) => {
+                    const speed = 0.1;
+                    const movement = self.progress * 100 * speed;
+                    bg.style.transform = `scale(1.1) translateX(${movement}px)`;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Initialize variables for scroll behavior
+        let lastScroll = 0;
+        const navbar = document.querySelector('.luxury-nav');
+        const brandLogo = document.querySelector('.brand-logo');
+        const navProgress = document.querySelector('.nav-progress');
+
+        // Scroll behavior for navigation and logo
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Update progress bar
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            navProgress.style.width = `${scrollPercent}%`;
+
+            // Hide/show logo based on scroll direction
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                brandLogo.classList.add('hidden');
+            } else {
+                brandLogo.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Animate nav links on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    link.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('hero-video');
+            
+            // Ensure video plays smoothly
+            video.playbackRate = 0.75; // Slightly slower for more dramatic effect
+            
+            // Add loading state
+            video.addEventListener('loadeddata', function() {
+                gsap.to('.video-overlay', {
+                    opacity: 0.7,
+                    duration: 1.5,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Handle video loading errors
+            video.addEventListener('error', function() {
+                console.error('Error loading video');
+                // Fallback to static image if video fails
+                document.querySelector('.video-background').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+<style>
+    .clothing-grid {
+        perspective: 2000px;
+    }
+
+    .clothing-item {
+        transition: all 0.5s ease;
+        transform-style: preserve-3d;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotateY(0deg); }
+        50% { transform: translateY(-10px) rotateY(5deg); }
+        100% { transform: translateY(0px) rotateY(0deg); }
+    }
+
+    .clothing-item:hover {
+        transform: rotateY(15deg) scale(1.1);
+        box-shadow: -20px 20px 30px rgba(0,0,0,0.2);
+        animation: none;
+    }
+
+    .clothing-preview {
+        overflow: visible;
+    }
+
+    .clothing-preview img {
+        transition: all 0.5s ease;
+        transform-style: preserve-3d;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .clothing-item:hover .clothing-preview img {
+        transform: translateZ(50px) rotateY(-5deg);
+        box-shadow: 20px 20px 30px rgba(0,0,0,0.2);
+    }
+
+    .item-details {
+        transition: all 0.5s ease;
+        transform-style: preserve-3d;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .clothing-item:hover .item-details {
+        transform: translateZ(30px) translateY(10px);
+    }
+
+    .buy-button {
+        transition: all 0.4s ease;
+        transform-style: preserve-3d;
+        position: relative;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .buy-button:hover {
+        transform: translateZ(20px) scale(1.1);
+        background: #45a049;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+</style>
+
+<style>
+    .shop-section {
+        padding: 40px 20px;
+        text-align: center;
+        background: #f8f8f8;
+        position: relative;
+        z-index: 2;
+    }
+
+    .shop-section h2 {
+        font-family: 'Times New Roman', serif;
+        font-size: 42px;
+        font-weight: 300;
+        color: #333;
+        letter-spacing: 2px;
+        line-height: 1.2;
+        margin-bottom: 40px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s forwards;
+    }
+
+    .clothing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 15px;
+        width: 100%;
+    }
+
+    .clothing-item {
+        background: #ffffff;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s forwards;
+    }
+
+    .clothing-preview {
+        width: 100%;
+        height: 340px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .clothing-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: grayscale(20%);
+    }
+
+    .item-details {
+        padding: 20px;
+        background: white;
+        position: relative;
+        z-index: 1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .item-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 22px;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        font-weight: 400;
+        letter-spacing: 1px;
+    }
+
+    .item-price {
+        font-family: 'Montserrat', sans-serif;
+        color: #1a1a1a;
+        font-size: 16px;
+        font-weight: 300;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .shop-section {
+            padding: 30px 15px;
+        }
+        
+        .shop-section h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        
+        .clothing-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .clothing-item {
+            height: 400px;
+        }
+        
+        .clothing-preview {
+            height: 280px;
+        }
+    }
+</style>
+
+
